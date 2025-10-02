@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradence - AI-Powered Question Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Load external libraries for document processing -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing document...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification" style="display: none;"></div>
+
+    <!-- Landing Page -->
+    <div id="landing-page" class="page active">
+        <div class="container">
+            <!-- Header -->
+            <header class="hero">
+                <div class="brand">
+                    <h1 class="brand-title">Gradence</h1>
+                    <div class="brand-tagline">AI-Powered Question Analysis</div>
+                </div>
+                <p class="hero-subtitle">Upload your exam papers and get instant Bloom's Taxonomy analysis with detailed insights and recommendations</p>
+            </header>
+
+            <!-- Main Upload Section -->
+            <main class="upload-section">
+                <div class="upload-card glass">
+                    <!-- File Upload Area -->
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10,9 9,9 8,9"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="upload-title">Drop your document here</h3>
+                        <p class="upload-subtitle">or click to browse files</p>
+
+                        <!-- Supported Formats -->
+                        <div class="supported-formats">
+                            <span class="format-tag">📄 PDF</span>
+                            <span class="format-tag">📝 DOCX</span>
+                            <span class="format-tag">📃 TXT</span>
+                        </div>
+
+                        <!-- Hidden File Input -->
+                        <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" style="display: none;">
+
+                        <!-- Browse Button -->
+                        <button class="btn btn--outline browse-btn" id="browse-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                            </svg>
+                            Browse Files
+                        </button>
+                    </div>
+
+                    <!-- File Information Display -->
+                    <div class="file-info glass" id="file-info" style="display: none;">
+                        <div class="file-preview">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name" id="file-name">No file selected</div>
+                                <div class="file-size" id="file-size">0 KB</div>
+                                <div class="file-status" id="file-status">Processing...</div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <span class="progress-text" id="progress-text">Reading file...</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Analyze Button -->
+                    <button class="btn btn--primary btn--large analyze-btn" id="analyze-btn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="21 21l-4.35-4.35"></path>
+                        </svg>
+                        Analyze Document
+                    </button>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <div class="feature-card glass">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Bloom's Taxonomy</h3>
+                        <p>Advanced cognitive level classification</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <div class="feature-icon">📊</div>
+                        <h3>Smart Analytics</h3>
+                        <p>Detailed difficulty distribution</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Real Processing</h3>
+                        <p>PDF, DOCX, and TXT support</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Processing Page -->
+    <div id="processing-page" class="page">
+        <div class="container">
+            <header class="processing-header">
+                <div class="processing-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h1>Analyzing Your Document</h1>
+                <p>Our AI is examining your questions and applying Bloom's Taxonomy classification</p>
+            </header>
+
+            <main class="processing-section">
+                <div class="processing-steps">
+                    <div class="step glass" id="step-1">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Document Processing</h3>
+                            <p>Extracting text from PDF/DOCX/TXT files</p>
+                        </div>
+                        <div class="step-status">
+                            <div class="step-loader"></div>
+                        </div>
+                    </div>
+
+                    <div class="step glass" id="step-2">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Question Detection</h3>
+                            <p>Using pattern matching to identify questions</p>
+                        </div>
+                        <div class="step-status">
+                            <div class="step-loader"></div>
+                        </div>
+                    </div>
+
+                    <div class="step glass" id="step-3">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Bloom's Classification</h3>
+                            <p>Analyzing cognitive complexity levels</p>
+                        </div>
+                        <div class="step-status">
+                            <div class="step-loader"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="processing-info glass">
+                    <div class="time-remaining">
+                        <span>Processing time: <strong id="time-remaining">20 seconds</strong></span>
+                    </div>
+                    <div class="processing-details">
+                        <p>Analyzing question patterns and cognitive complexity...</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="results-page" class="page">
+        <div class="container">
+            <header class="results-header">
+                <div class="results-title">
+                    <h1 id="paper-title">Analysis Results</h1>
+                    <p id="timestamp" class="timestamp">Analysis completed</p>
+                </div>
+                <button class="btn btn--secondary" id="new-analysis-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18m-9-9l9 9-9 9"/>
+                    </svg>
+                    New Analysis
+                </button>
+            </header>
+
+            <main class="results-section">
+                <!-- Summary Cards -->
+                <div class="summary-dashboard">
+                    <div class="summary-card glass">
+                        <div class="summary-icon">📊</div>
+                        <div class="summary-content">
+                            <h3>Questions Found</h3>
+                            <div class="summary-value" id="total-questions">0</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card glass">
+                        <div class="summary-icon">⚖️</div>
+                        <div class="summary-content">
+                            <h3>Paper Status</h3>
+                            <div class="status" id="paper-status">Processing...</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card glass">
+                        <div class="summary-icon">🎯</div>
+                        <div class="summary-content">
+                            <h3>Overall Difficulty</h3>
+                            <div class="difficulty-badge" id="overall-difficulty">Analyzing...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container glass">
+                        <div class="chart-header">
+                            <h3>Difficulty Distribution</h3>
+                            <p>Question complexity breakdown</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="difficulty-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container glass">
+                        <div class="chart-header">
+                            <h3>Bloom's Taxonomy Levels</h3>
+                            <p>Cognitive complexity analysis</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="blooms-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questions Analysis Table -->
+                <div class="questions-analysis glass">
+                    <div class="analysis-header">
+                        <div class="header-content">
+                            <h3>Your Questions Analysis</h3>
+                            <p>Questions extracted from your uploaded document</p>
+                        </div>
+                        <div class="analysis-filters">
+                            <select id="difficulty-filter" class="filter-select">
+                                <option value="all">All Difficulties</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+
+                            <select id="blooms-filter" class="filter-select">
+                                <option value="all">All Bloom's Levels</option>
+                                <option value="Remember">Remember</option>
+                                <option value="Understand">Understand</option>
+                                <option value="Apply">Apply</option>
+                                <option value="Analyze">Analyze</option>
+                                <option value="Evaluate">Evaluate</option>
+                                <option value="Create">Create</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="questions-table-container">
+                        <div class="questions-table" id="questions-table">
+                            <!-- Questions will be populated here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assessment Report -->
+                <div class="assessment-section glass">
+                    <h3>Assessment Report</h3>
+                    <div class="assessment-content" id="assessment-details">
+                        <!-- Assessment details populated by JavaScript -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Load JavaScript -->
+    <script src="../static/app.js"></script>
+</body>
+</html>
