@@ -38,8 +38,38 @@ def predict_question(question):
     return bloom_levels[pred]
 
 def extract_questions(text):
-    questions = re.split(r'[.?!\n]+', text)
-    return [q.strip() for q in questions if q.strip() and len(q.split()) > 3]
+    lines = re.split(r'\n', text.replace('\r', ''))
+    questions = []
+    currentQuestion = ''
+    questionStart = r'^\s*(Q\s*?\d+|\d+\.|\d+\)|Question \d+|[a-z]\)|[A-Z]\.)\s*'
+    ignoreKeywords = ['Note:', 'Subject:', 'Class', 'SEM:', 'Branch:', 'Duration:', 'Max.Marks:', 'All Questions', 'Figures', 'CO5',
+                      'CO1', 'CO2', 'CO3', 'CO4', 'CO6', 'Internal','Attempt', 'First', 'Second', 'Signatures', 'Subject',
+                      'Verified', 'L3', 'L2', 'CO', 'PI', 'Question', 'Blooms taxonomy']
+
+    for line in lines:
+        line = line.strip()
+        if not line or any(line.startswith(keyword) for keyword in ignoreKeywords):
+            continue
+
+        if any(keyword in line for keyword in ignoreKeywords):
+            if currentQuestion:
+                questions.append(currentQuestion.strip())
+            currentQuestion += ' '
+            continue
+
+        if re.match(questionStart, line):
+            if currentQuestion:
+                questions.append(currentQuestion.strip())
+            currentQuestion = line
+        else:
+            currentQuestion += ' ' + line
+
+    if currentQuestion:
+        questions.append(currentQuestion.strip())
+
+    questions = [q for q in questions if len(q.split()) > 3]
+
+    return questions
 
 #process different file types
 def process_file(file):
