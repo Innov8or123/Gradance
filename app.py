@@ -41,7 +41,7 @@ def extract_questions(text):
     lines = re.split(r'\n', text.replace('\r', ''))
     questions = []
     currentQuestion = ''
-    questionStart = r'^\s*(Q\s*?\d+|\d+\.|\d+\)|Question \d+|[a-z]\)|[A-Z]\.)\s*'
+    questionStart = r'^\s*(Q\s*?\d+|\d+(?:\.\d+)*(?:\.\d+)?\s|[a-z]\)|[A-Z]\))\s*'
     ignoreKeywords = ['Note:', 'Subject:', 'Class', 'SEM:', 'Branch:', 'Duration:', 'Max.Marks:', 'All Questions', 'Figures', 'CO5',
                       'CO1', 'CO2', 'CO3', 'CO4', 'CO6', 'Internal','Attempt', 'First', 'Second', 'Signatures', 'Subject',
                       'Verified', 'L3', 'L2', 'CO', 'PI', 'Question', 'Blooms taxonomy']
@@ -57,7 +57,7 @@ def extract_questions(text):
             currentQuestion += ' '
             continue
 
-        if re.match(questionStart, line):
+        if re.match(questionStart, line) or 'OR' in line:
             if currentQuestion:
                 questions.append(currentQuestion.strip())
             currentQuestion = line
