@@ -232,15 +232,19 @@
                 <div class="charts-section">
                     <div class="chart-container glass">
                         <div class="chart-header">
-                            <h3>Difficulty Distribution</h3>
-                            <p>Question complexity breakdown</p>
+                            <h3>Bloom's Taxonomy Levels</h3>
+                            <p>Cognitive complexity analysis</p>
                         </div>
                         <div class="chart-wrapper">
                             <canvas id="difficulty-chart"></canvas>
                         </div>
                     </div>
 
-                    <div class="chart-container glass">
+
+
+                    
+
+                    <!-- <div class="chart-container glass">
                         <div class="chart-header">
                             <h3>Bloom's Taxonomy Levels</h3>
                             <p>Cognitive complexity analysis</p>
@@ -249,7 +253,11 @@
                             <canvas id="blooms-chart"></canvas>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+
+
+
 
                 <!-- Questions Analysis Table -->
                 <div class="questions-analysis glass">
@@ -259,22 +267,23 @@
                             <p>Questions extracted from your uploaded document</p>
                         </div>
                         <div class="analysis-filters">
-                            <select id="difficulty-filter" class="filter-select">
-                                <option value="all">All Difficulties</option>
-                                <option value="Easy">Easy</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Hard">Hard</option>
-                            </select>
-
                             <select id="blooms-filter" class="filter-select">
                                 <option value="all">All Bloom's Levels</option>
-                                <option value="Remember">Remember</option>
-                                <option value="Understand">Understand</option>
-                                <option value="Apply">Apply</option>
-                                <option value="Analyze">Analyze</option>
-                                <option value="Evaluate">Evaluate</option>
-                                <option value="Create">Create</option>
+                                <option value="Remember">Level 1</option>
+                                <option value="Understand">Level 2</option>
+                                <option value="Apply">Level 3</option>
+                                <option value="Analyze">Level 4</option>
+                                <!-- <option value="Evaluate">Evaluate</option>
+                                <option value="Create">Create</option> -->
                             </select>
+
+                            <!-- <select id="difficulty-filter" class="filter-select">
+                                <option value="all">All Difficulties</option>
+                                <option value="Easy">Level 1</option>
+                                <option value="Level 2">Level 2</option>
+                                <option value="Level 3">Level 3</option>
+                            </select> -->
+
                         </div>
                     </div>
 

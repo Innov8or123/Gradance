@@ -116,8 +116,8 @@ def analyze():
         stats = {level: predictions.count(level) / total_questions * 100 for level in bloom_levels}
         stats['total_questions'] = total_questions
 
-        difficulty_map = {'Remember': 'Easy', 'Understand': 'Easy', 'Apply': 'Moderate', 
-                         'Analyze': 'Moderate', 'Evaluate': 'Hard', 'Create': 'Hard'}
+        difficulty_map = {'Remember': 'level 1', 'Understand': 'level 2', 'Apply': 'level 3', 
+                         'Analyze': 'level 4'}
         difficulties = [difficulty_map[p] for p in predictions]
         overall_difficulty = max(set(difficulties), key=difficulties.count) if difficulties else 'Unknown'
 

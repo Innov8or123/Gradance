@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paperStatus = document.getElementById('paper-status');
     const overallDifficulty = document.getElementById('overall-difficulty');
     const difficultyChart = document.getElementById('difficulty-chart').getContext('2d');
-    const bloomsChart = document.getElementById('blooms-chart').getContext('2d');
+    // const bloomsChart = document.getElementById('blooms-chart').getContext('2d');
     const questionsTable = document.getElementById('questions-table');
     const assessmentDetails = document.getElementById('assessment-details');
     const difficultyFilter = document.getElementById('difficulty-filter');
@@ -32,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Chart instances
     let difficultyChartInstance = null;
-    let bloomsChartInstance = null;
-
+    // let bloomsChartInstance = null;
     const bloom_levels = ['Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'];
-    const difficulty_map = {'Remember': 'Easy', 'Understand': 'Easy', 'Apply': 'Moderate', 'Analyze': 'Moderate', 'Evaluate': 'Hard', 'Create': 'Hard'};
+    const difficulty_map = {'Remember': 'level 1', 'Understand': 'level 2', 'Apply': 'level 3', 'Analyze': 'level 4'};
 
     // Drag and Drop
     uploadArea.addEventListener('dragover', (e) => {
@@ -140,18 +139,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Charts
                 if (difficultyChartInstance) difficultyChartInstance.destroy();
-                if (bloomsChartInstance) bloomsChartInstance.destroy();
+                // if (bloomsChartInstance) bloomsChartInstance.destroy();
                 difficultyChartInstance = new Chart(difficultyChart, {
                     type: 'pie',
                     data: {
-                        labels: ['Easy', 'Moderate', 'Hard'],
+                        labels: ['level 1', 'level 2', 'level 3', 'level 4'],
                         datasets: [{
                             data: [
-                                data.predictions.filter(p => ['Remember', 'Understand'].includes(p)).length / data.total_questions * 100,
-                                data.predictions.filter(p => ['Apply', 'Analyze'].includes(p)).length / data.total_questions * 100,
-                                data.predictions.filter(p => ['Evaluate', 'Create'].includes(p)).length / data.total_questions * 100
+                                data.predictions.filter(p => ['Remember'].includes(p)).length / data.total_questions * 100,
+                                data.predictions.filter(p => ['Understand'].includes(p)).length / data.total_questions * 100,
+                                data.predictions.filter(p => ['Apply'].includes(p)).length / data.total_questions * 100,
+                                data.predictions.filter(p => ['Analyze'].includes(p)).length / data.total_questions * 100
                             ],
-                            backgroundColor: ['#10B981', '#F59E0B', '#EF4444']
+                            backgroundColor: ['#10B981', '#F59E0B', '#EF4444', '#4F46E5']
                         }]
                     },
                     options: { 
@@ -160,26 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         plugins: {
                             legend: {
                                 labels: { color: '#bfbdbd'}
-                            }
-                        }
-                    }
-                });
-                bloomsChartInstance = new Chart(bloomsChart, {
-                    type: 'pie',
-                    data: {
-                        labels: bloom_levels,
-                        datasets: [{
-                            data: bloom_levels.map(level => data.stats[level] || 0),
-                            backgroundColor: ['#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6', '#6B7280']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                labels: { color: '#bfbdbd' }
                             },
                             title: {
                                 display: true,
@@ -189,6 +169,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 });
+
+
+                //----------------------------
+                // bloomsChartInstance = new Chart(bloomsChart, {
+                //     type: 'pie',
+                //     data: {
+                //         labels: bloom_levels,
+                //         datasets: [{
+                //             data: bloom_levels.map(level => data.stats[level] || 0),
+                //             backgroundColor: ['#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6', '#6B7280']
+                //         }]
+                //     },
+                //     options: {
+                //         responsive: true,
+                //         maintainAspectRatio: false,
+                //         plugins: {
+                //             legend: {
+                //                 position: 'top',
+                //                 labels: { color: '#bfbdbd' }
+                //             },
+                //             title: {
+                //                 display: true,
+                //                 text: 'Bloom\'s Taxonomy Distribution',
+                //                 color: '#bfbdbd'
+                //             }
+                //         }
+                //     }
+                // });
+                //-----------------------------------
+
+
 
                 // Questions Table and Filtering
                 const rows = data.questions.map((q, i) => `
@@ -207,19 +218,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Filter Logic
                 function filterTable() {
-                    const diffFilter = difficultyFilter.value;
+                    // const diffFilter = difficultyFilter.value;
                     const bloomsFilterValue = bloomsFilter.value;
                     rows.forEach((row, i) => {
                         const rowElement = questionsTable.children[i + 1];
-                        const difficulty = rowElement.getAttribute('data-difficulty');
+                        // const difficulty = rowElement.getAttribute('data-difficulty');
                         const blooms = rowElement.getAttribute('data-blooms');
-                        const matchDifficulty = diffFilter === 'all' || difficulty === diffFilter;
+                        // const matchDifficulty = diffFilter === 'all' || difficulty === diffFilter;
                         const matchBlooms = bloomsFilterValue === 'all' || blooms === bloomsFilterValue;
-                        rowElement.style.display = matchDifficulty && matchBlooms ? 'grid' : 'none';
+                        rowElement.style.display = matchBlooms ? 'grid' : 'none';
                     });
                 }
 
-                difficultyFilter.addEventListener('change', filterTable);
+                // difficultyFilter.addEventListener('change', filterTable);
                 bloomsFilter.addEventListener('change', filterTable);
                 filterTable(); // Initial filter
 
@@ -254,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         landingPage.classList.add('active');
         resultsPage.classList.remove('active');
         if (difficultyChartInstance) difficultyChartInstance.destroy();
-        if (bloomsChartInstance) bloomsChartInstance.destroy();
+        // if (bloomsChartInstance) bloomsChartInstance.destroy();
     });
 
     function resetState() {
@@ -272,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timeRemaining = 20;
         document.getElementById('time-remaining').textContent = `${timeRemaining} seconds`;
         steps.forEach(step => step.classList.remove('active'));
-        if (difficultyFilter) difficultyFilter.value = 'all';
+        // if (difficultyFilter) difficultyFilter.value = 'all';
         if (bloomsFilter) bloomsFilter.value = 'all';
     }
 
