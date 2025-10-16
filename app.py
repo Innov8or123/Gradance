@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 
 device = torch.device('cpu')
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 tokenizer = AutoTokenizer.from_pretrained("cip29/bert-blooms-taxonomy-classifier")
 model = AutoModelForSequenceClassification.from_pretrained("cip29/bert-blooms-taxonomy-classifier").to(device)
