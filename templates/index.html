@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Load external libraries for document processing -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
@@ -30,7 +29,6 @@
     <!-- Landing Page -->
     <div id="landing-page" class="page active">
         <div class="container">
-            <!-- Header -->
             <header class="hero">
                 <div class="brand">
                     <h1 class="brand-title">Gradence</h1>
@@ -39,10 +37,8 @@
                 <p class="hero-subtitle">Upload your exam papers and get instant Bloom's Taxonomy analysis with detailed insights and recommendations</p>
             </header>
 
-            <!-- Main Upload Section -->
             <main class="upload-section">
                 <div class="upload-card glass">
-                    <!-- File Upload Area -->
                     <div class="upload-area" id="upload-area">
                         <div class="upload-icon">
                             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -55,18 +51,12 @@
                         </div>
                         <h3 class="upload-title">Drop your document here</h3>
                         <p class="upload-subtitle">or click to browse files</p>
-
-                        <!-- Supported Formats -->
                         <div class="supported-formats">
                             <span class="format-tag">📄 PDF</span>
                             <span class="format-tag">📝 DOCX</span>
                             <span class="format-tag">📃 TXT</span>
                         </div>
-
-                        <!-- Hidden File Input -->
                         <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" style="display: none;">
-
-                        <!-- Browse Button -->
                         <button class="btn btn--outline browse-btn" id="browse-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -75,7 +65,6 @@
                         </button>
                     </div>
 
-                    <!-- File Information Display -->
                     <div class="file-info glass" id="file-info" style="display: none;">
                         <div class="file-preview">
                             <div class="file-icon">📄</div>
@@ -89,11 +78,9 @@
                             <div class="progress-bar">
                                 <div class="progress-fill" id="progress-fill"></div>
                             </div>
-                            <span class="progress-text" id="progress-text">Reading file...</span>
                         </div>
                     </div>
 
-                    <!-- Main Analyze Button -->
                     <button class="btn btn--primary btn--large analyze-btn" id="analyze-btn" disabled>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -103,7 +90,6 @@
                     </button>
                 </div>
 
-                <!-- Features Grid -->
                 <div class="features-grid">
                     <div class="feature-card glass">
                         <div class="feature-icon">🎯</div>
@@ -129,13 +115,10 @@
     <div id="processing-page" class="page">
         <div class="container">
             <header class="processing-header">
-                <div class="processing-spinner">
-                    <div class="spinner"></div>
-                </div>
+                <div class="processing-spinner"><div class="spinner"></div></div>
                 <h1>Analyzing Your Document</h1>
                 <p>Our AI is examining your questions and applying Bloom's Taxonomy classification</p>
             </header>
-
             <main class="processing-section">
                 <div class="processing-steps">
                     <div class="step glass" id="step-1">
@@ -144,40 +127,25 @@
                             <h3>Document Processing</h3>
                             <p>Extracting text from PDF/DOCX/TXT files</p>
                         </div>
-                        <div class="step-status">
-                            <div class="step-loader"></div>
-                        </div>
                     </div>
-
                     <div class="step glass" id="step-2">
                         <div class="step-number">2</div>
                         <div class="step-content">
                             <h3>Question Detection</h3>
                             <p>Using pattern matching to identify questions</p>
                         </div>
-                        <div class="step-status">
-                            <div class="step-loader"></div>
-                        </div>
                     </div>
-
                     <div class="step glass" id="step-3">
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h3>Bloom's Classification</h3>
                             <p>Analyzing cognitive complexity levels</p>
                         </div>
-                        <div class="step-status">
-                            <div class="step-loader"></div>
-                        </div>
                     </div>
                 </div>
-
                 <div class="processing-info glass">
                     <div class="time-remaining">
                         <span>Processing time: <strong id="time-remaining">20 seconds</strong></span>
-                    </div>
-                    <div class="processing-details">
-                        <p>Analyzing question patterns and cognitive complexity...</p>
                     </div>
                 </div>
             </main>
@@ -192,16 +160,10 @@
                     <h1 id="paper-title">Analysis Results</h1>
                     <p id="timestamp" class="timestamp">Analysis completed</p>
                 </div>
-                <button class="btn btn--secondary" id="new-analysis-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 12h18m-9-9l9 9-9 9"/>
-                    </svg>
-                    New Analysis
-                </button>
+                <button class="btn btn--secondary" id="new-analysis-btn">New Analysis</button>
             </header>
 
             <main class="results-section">
-                <!-- Summary Cards -->
                 <div class="summary-dashboard">
                     <div class="summary-card glass">
                         <div class="summary-icon">📊</div>
@@ -210,7 +172,6 @@
                             <div class="summary-value" id="total-questions">0</div>
                         </div>
                     </div>
-
                     <div class="summary-card glass">
                         <div class="summary-icon">⚖️</div>
                         <div class="summary-content">
@@ -218,7 +179,6 @@
                             <div class="status" id="paper-status">Processing...</div>
                         </div>
                     </div>
-
                     <div class="summary-card glass">
                         <div class="summary-icon">🎯</div>
                         <div class="summary-content">
@@ -228,55 +188,27 @@
                     </div>
                 </div>
 
-                <!-- Charts Section -->
-                <div class="charts-section">
-                    <div class="chart-container glass">
-                        <div class="chart-header">
-                            <h3>Bloom's Taxonomy Levels</h3>
-                            <p>Cognitive complexity analysis</p>
-                        </div>
-                        <div class="chart-wrapper">
-                            <canvas id="difficulty-chart"></canvas>
-                        </div>
-                    </div>
-
                 <!-- Questions Analysis Table -->
                 <div class="questions-analysis glass">
                     <div class="analysis-header">
                         <div class="header-content">
                             <h3>Your Questions Analysis</h3>
-                            <p>Questions extracted from your uploaded document</p>
-                        </div>
-                        <div class="analysis-filters">
-                            <select id="blooms-filter" class="filter-select">
-                                <option value="all">All Bloom's Levels</option>
-                                <option value="Remember">Level 1</option>
-                                <option value="Understand">Level 2</option>
-                                <option value="Apply">Level 3</option>
-                                <option value="Analyze">Level 4</option>
-                            </select>
+                            <p>Questions extracted from your document</p>
                         </div>
                     </div>
-
                     <div class="questions-table-container">
-                        <div class="questions-table" id="questions-table">
-                            <!-- Questions will be populated here by JavaScript -->
-                        </div>
+                        <div class="questions-table" id="questions-table"></div>
                     </div>
                 </div>
 
-                <!-- Assessment Report -->
                 <div class="assessment-section glass">
                     <h3>Assessment Report</h3>
-                    <div class="assessment-content" id="assessment-details">
-                        <!-- Assessment details populated by JavaScript -->
-                    </div>
+                    <div class="assessment-content" id="assessment-details"></div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Load JavaScript -->
     <script src="../static/app.js"></script>
 </body>
 </html>
