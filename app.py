@@ -1,138 +1,110 @@
 from flask import Flask, render_template, request, jsonify
-import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import os
+import json
+import pandas as pd
+import tensorflow as tf
+import pickle
 import PyPDF2
 import re
 import mammoth
-import os
+import numpy as np
 
 app = Flask(__name__)
 
+# --- Load Models ---
+MODEL_PATH = "model/bloom_model.h5"
+VECTORIZER_PATH = "model/vectorizer.pkl"
+LABEL_ENCODER_PATH = "model/label_encoder.pkl"
+JSON_PATH = "data/co_mapping.json"
 
-device = torch.device('cpu')
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+model = tf.keras.models.load_model(MODEL_PATH)
+with open(VECTORIZER_PATH, 'rb') as f:
+    vectorizer = pickle.load(f)
+with open(LABEL_ENCODER_PATH, 'rb') as f:
+    label_encoder = pickle.load(f)
+with open(JSON_PATH, "r") as f:
+    config = json.load(f)
 
-tokenizer = AutoTokenizer.from_pretrained("cip29/bert-blooms-taxonomy-classifier")
-model = AutoModelForSequenceClassification.from_pretrained("cip29/bert-blooms-taxonomy-classifier").to(device)
+def get_best_match(clean_q, items):
+    if not items: return "N/A", 0
+    matches = []
+    for key, data in items.items():
+        score = sum(kw.lower() in clean_q for kw in data.get('keywords', []))
+        matches.append((key, score, data.get('name', '')))
+    best_match = max(matches, key=lambda x: x[1], default=("N/A", 0, ""))
+    return best_match if best_match[1] > 0 else ("CO-NA", 0, "Not Matched")
 
-bloom_levels = ['Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create']
+def get_notebook_analysis(question_text):
+    clean_q = re.sub(r'[^\w\s]', '', question_text.lower())
+    tfidf_q = vectorizer.transform([clean_q]).toarray()
+    bloom_level = label_encoder.inverse_transform([np.argmax(model.predict(tfidf_q, verbose=0))])[0]
+    subject_id, _ , _ = get_best_match(clean_q, config.get('subjects', {}))
+    co_id, _, co_name = get_best_match(clean_q, config.get('co_mappings', {}).get(subject_id, {}))
+    return bloom_level, co_id, co_name
 
-def predict_question(question):
-    model.eval()
-    encoding = tokenizer.encode_plus(
-        question,
-        add_special_tokens=True,
-        max_length=128,
-        return_token_type_ids=False,
-        padding='max_length',
-        truncation=True,
-        return_attention_mask=True,
-        return_tensors='pt'
-    )
-    input_ids = encoding['input_ids'].to(device)
-    attention_mask = encoding['attention_mask'].to(device)
-
-    with torch.no_grad():
-        outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-        pred = torch.argmax(outputs.logits, dim=1).cpu().numpy()[0]
-    
-    return bloom_levels[pred]
-
+# --- FIXED EXTRACTION LOGIC ---
 def extract_questions(text):
-    lines = re.split(r'\n', text.replace('\r', ''))
-    questions = []
-    currentQuestion = ''
-    questionStart = r'^\s*(Q\s*?\d+|\d+\.|[a-z]\)|[A-Z]\))\s*'
-    ignoreKeywords = ['Note:', 'Subject:', 'Class', 'SEM:', 'Branch:', 'Duration:', 'Max.Marks:', 'All Questions', 'Figures', 'CO5',
-                      'CO1', 'CO2', 'CO3', 'CO4', 'CO6', 'Internal','Attempt', 'First', 'Second', 'Signatures', 'Subject',
-                      'Verified', 'L3', 'L2', 'CO', 'PI', 'Question', 'Blooms taxonomy']
+    if not text: return []
+    # Normalize whitespace
+    text = text.replace("\r", " ").replace("\n", " ")
+    text = re.sub(r'\s+', ' ', text)
+    
+    sep = "|||"
+    # 1. Split on Main markers (Q.1, Q2)
+    text = re.sub(r'(\bQ\.?\s*\d+[\.:]?)', sep + r'\1', text)
+    # 2. Split on sub-markers a) to g) (prevents i, ii merge)
+    text = re.sub(r'(\b[a-g]\s*\))', sep + r'\1', text)
+    # 3. Split on A) and B) - including "OR A)" and "OR B)"
+    text = re.sub(r'(\bOR\s+[AB]\s*\)|\b[AB]\s*\))', sep + r'\1', text)
+    # 4. Split on start words "In" or "Any" if they follow punctuation
+    text = re.sub(r'([\.?!]\s+)(In|Any)\b', r'\1' + sep + r'\2', text)
+    # 5. Split after '?' if the next part is capitalized
+    text = re.sub(r'(\?\s+)(?=[A-Z])', r'\1' + sep, text)
 
-    for line in lines:
-        line = line.strip()
-        if not line or any(line.startswith(keyword) for keyword in ignoreKeywords):
+    chunks = text.split(sep)
+    final_questions = []
+    ignore = ["Class / SEM:", "Subject:", "Max. Marks:", "Duration:", "Note:", "Figures to the right", "Internal Assessment"]
+
+    for chunk in chunks:
+        q = chunk.strip()
+        if not q or len(q) < 10 or any(k in q for k in ignore):
             continue
-
-        if any(keyword in line for keyword in ignoreKeywords):
-            if currentQuestion:
-                questions.append(currentQuestion.strip())
-            currentQuestion += ' '
+        # Check instructions: keep only if long
+        if any(p in q.lower() for p in ["attempt any", "solve any"]) and len(q.split()) < 15:
             continue
-
-        if re.match(questionStart, line) or 'OR' in line:
-            if currentQuestion:
-                questions.append(currentQuestion.strip())
-            currentQuestion = line
-        else:
-            currentQuestion += ' ' + line
-
-    if currentQuestion:
-        questions.append(currentQuestion.strip())
-
-    questions = [q for q in questions if len(q.split()) > 3]
-
-    return questions
-
-#process different file types
-def process_file(file):
-    filename = file.filename
-    if filename.endswith('.pdf'):
-        pdf_reader = PyPDF2.PdfReader(file)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
-    elif filename.endswith(('.docx', '.doc')):
-        result = mammoth.extract_raw_text(file)
-        text = result.value
-    elif filename.endswith('.txt'):
-        text = file.read().decode('utf-8')
-    else:
-        raise ValueError("Unsupported file format")
-    return extract_questions(text)
+        final_questions.append(q)
+    return final_questions
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def home(): return render_template('index.html')
 
-# Route to handle file upload and prediction
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
     file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-    if not any(file.filename.endswith(ext) for ext in ['.pdf', '.docx', '.doc', '.txt']):
-        return jsonify({'error': 'Please upload a PDF, DOCX, DOC, or TXT file'}), 400
+    if file.filename.endswith(".pdf"):
+        reader = PyPDF2.PdfReader(file)
+        text = " ".join(page.extract_text() or "" for page in reader.pages)
+    elif file.filename.endswith((".docx", ".doc")):
+        text = mammoth.extract_raw_text(file).value
+    else:
+        text = file.read().decode("utf-8")
 
-    try:
-        # Process file and extract questions
-        questions = process_file(file)
-        if not questions:
-            return jsonify({'error': 'No questions found in the file'}), 400
+    questions = extract_questions(text)
+    predictions, co_mapping = [], []
+    for q in questions:
+        bloom, co_id, co_name = get_notebook_analysis(q)
+        predictions.append(bloom)
+        co_mapping.append({"co_code": co_id, "co_name": co_name})
 
-        predictions = [predict_question(q) for q in questions]
-        
-        # Calculate statistics
-        total_questions = len(questions)
-        stats = {level: predictions.count(level) / total_questions * 100 for level in bloom_levels}
-        stats['total_questions'] = total_questions
+    dominant_bloom = max(set(predictions), key=predictions.count) if predictions else "Remember"
+    return jsonify({
+        "status": "success",
+        "questions": questions,
+        "predictions": predictions,
+        "co_mapping": co_mapping,
+        "total_questions": len(questions),
+        "overall_difficulty": dominant_bloom
+    })
 
-        difficulty_map = {'Remember': 'level 1', 'Understand': 'level 2', 'Apply': 'level 3', 
-                         'Analyze': 'level 4'}
-        difficulties = [difficulty_map[p] for p in predictions]
-        overall_difficulty = max(set(difficulties), key=difficulties.count) if difficulties else 'Unknown'
-
-        return jsonify({
-            'status': 'success',
-            'stats': stats,
-            'questions': questions,
-            'predictions': predictions,
-            'total_questions': total_questions,
-            'overall_difficulty': overall_difficulty,
-            'timestamp': 'Analysis completed at ' + os.popen('date').read().strip()
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
