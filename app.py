@@ -11,7 +11,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-# --- Load Models ---
+# Load Model
 MODEL_PATH = "model/bloom_model.h5"
 VECTORIZER_PATH = "model/vectorizer.pkl"
 LABEL_ENCODER_PATH = "model/label_encoder.pkl"
@@ -42,23 +42,20 @@ def get_notebook_analysis(question_text):
     co_id, _, co_name = get_best_match(clean_q, config.get('co_mappings', {}).get(subject_id, {}))
     return bloom_level, co_id, co_name
 
-# --- FIXED EXTRACTION LOGIC ---
+
 def extract_questions(text):
     if not text: return []
-    # Normalize whitespace
     text = text.replace("\r", " ").replace("\n", " ")
     text = re.sub(r'\s+', ' ', text)
     
     sep = "|||"
-    # 1. Split on Main markers (Q.1, Q2)
+    #1) spilt at 'Q' with a number
     text = re.sub(r'(\bQ\.?\s*\d+[\.:]?)', sep + r'\1', text)
-    # 2. Split on sub-markers a) to g) (prevents i, ii merge)
+    #2)split for a).....
     text = re.sub(r'(\b[a-g]\s*\))', sep + r'\1', text)
-    # 3. Split on A) and B) - including "OR A)" and "OR B)"
+    # 3)New question start after A)and B)
     text = re.sub(r'(\bOR\s+[AB]\s*\)|\b[AB]\s*\))', sep + r'\1', text)
-    # 4. Split on start words "In" or "Any" if they follow punctuation
-    text = re.sub(r'([\.?!]\s+)(In|Any)\b', r'\1' + sep + r'\2', text)
-    # 5. Split after '?' if the next part is capitalized
+    #4)end after ?
     text = re.sub(r'(\?\s+)(?=[A-Z])', r'\1' + sep, text)
 
     chunks = text.split(sep)
@@ -69,7 +66,7 @@ def extract_questions(text):
         q = chunk.strip()
         if not q or len(q) < 10 or any(k in q for k in ignore):
             continue
-        # Check instructions: keep only if long
+
         if any(p in q.lower() for p in ["attempt any", "solve any"]) and len(q.split()) < 15:
             continue
         final_questions.append(q)
