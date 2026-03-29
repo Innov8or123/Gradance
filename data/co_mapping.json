@@ -1,457 +1,896 @@
 {
-    "subjects": {
-      "Data Structures and Algorithms": {
-        "keywords": [
-          "array", "stack", "queue", "linked list", "tree", "graph", "sorting", "searching",
-          "recursion", "infix", "postfix", "prefix", "bst", "avl", "hashing", "time complexity",
-          "space complexity", "adt", "deque", "priority queue", "circular queue", "huffman",
-          "traversal", "dfs", "bfs", "binary search tree", "polynomial addition", "expression tree"
-        ]
-      },
-      "Discrete Structures and Graph Theory": {
-        "keywords": [
-          "propositional logic", "predicate logic", "quantifiers", "normal forms", "truth table",
-          "boolean algebra", "set theory", "venn diagram", "relations", "functions", "poset",
-          "hasse diagram", "lattice", "permutation", "combination", "probability", "bayes theorem",
-          "markov chain", "algebraic structures", "group", "ring", "semi group", "monoid",
-          "graph theory", "planar graph", "hamiltonian", "euler graph", "graph coloring",
-          "dijkstra", "warshall", "pigeonhole principle", "recurrence relations", "coding theory"
-        ]
-      },
-      "Database Management Systems": {
-        "keywords": [
-          "database", "dbms", "rdbms", "sql", "query", "table", "entity", "relationship",
-          "er model", "eer model", "normalization", "1nf", "2nf", "3nf", "bcnf", "4nf",
-          "functional dependency", "key", "primary key", "foreign key", "candidate key",
-          "transaction", "acid", "concurrency", "serializability", "lock", "deadlock",
-          "recovery", "log", "join", "view", "trigger", "stored procedure", "index",
-          "distributed database", "multimedia database", "cloud database", "data independence"
-        ]
-      },
-      "Quantitative Analysis": {
+  "subjects": {
+    "Data Structures and Algorithms": {
       "keywords": [
-        "regression", "correlation", "hypothesis", "estimator", "moments", 
-        "distribution", "likelihood", "mae", "mape", "skewness", "kurtosis",
-        "sample", "variance", "mean", "coefficient", "null", "alternative"
+        "array",
+        "stack",
+        "queue",
+        "linked list",
+        "tree",
+        "graph",
+        "sorting",
+        "searching",
+        "recursion",
+        "infix",
+        "postfix",
+        "prefix",
+        "bst",
+        "avl",
+        "hashing",
+        "time complexity",
+        "space complexity",
+        "adt",
+        "deque",
+        "priority queue",
+        "circular queue",
+        "huffman",
+        "traversal",
+        "dfs",
+        "bfs",
+        "binary search tree",
+        "polynomial addition",
+        "expression tree"
+      ]
+    },
+    "Discrete Structures and Graph Theory": {
+      "keywords": [
+        "propositional logic",
+        "predicate logic",
+        "quantifiers",
+        "normal forms",
+        "truth table",
+        "boolean algebra",
+        "set theory",
+        "venn diagram",
+        "relations",
+        "functions",
+        "poset",
+        "hasse diagram",
+        "lattice",
+        "permutation",
+        "combination",
+        "probability",
+        "bayes theorem",
+        "markov chain",
+        "algebraic structures",
+        "group",
+        "ring",
+        "semi group",
+        "monoid",
+        "graph theory",
+        "planar graph",
+        "hamiltonian",
+        "euler graph",
+        "graph coloring",
+        "dijkstra",
+        "warshall",
+        "pigeonhole principle",
+        "recurrence relations",
+        "coding theory"
+      ]
+    },
+    "Database Management Systems": {
+      "keywords": [
+        "database",
+        "dbms",
+        "rdbms",
+        "sql",
+        "query",
+        "table",
+        "entity",
+        "relationship",
+        "er model",
+        "eer model",
+        "normalization",
+        "1nf",
+        "2nf",
+        "3nf",
+        "bcnf",
+        "4nf",
+        "functional dependency",
+        "key",
+        "primary key",
+        "foreign key",
+        "candidate key",
+        "transaction",
+        "acid",
+        "concurrency",
+        "serializability",
+        "lock",
+        "deadlock",
+        "recovery",
+        "log",
+        "join",
+        "view",
+        "trigger",
+        "stored procedure",
+        "index",
+        "distributed database",
+        "multimedia database",
+        "cloud database",
+        "data independence"
+      ]
+    },
+    "Quantitative Analysis": {
+      "keywords": [
+        "regression",
+        "correlation",
+        "hypothesis",
+        "estimator",
+        "moments",
+        "distribution",
+        "likelihood",
+        "mae",
+        "mape",
+        "skewness",
+        "kurtosis",
+        "sample",
+        "variance",
+        "mean",
+        "coefficient",
+        "null",
+        "alternative"
+      ]
+    },
+    "Mathematics": {
+      "keywords": [
+        "and f-distributions: exact sampling distributions",
+        "applications of eigenvalues and eigenvectors in machine learning",
+        "bayesian statistics and its applications",
+        "binary data",
+        "bracketing methods bisection method",
+        "chi square",
+        "cleaning and preparing data",
+        "deciding appropriate machine learning models",
+        "discrete data",
+        "dot plot",
+        "draw conclusions",
+        "eigen values and eigen vectors",
+        "exponential graph",
+        "factor analysis",
+        "false position method",
+        "feature engineering",
+        "frequency distribution graph",
+        "graph-based data structures in python",
+        "handling imbalanced datasets in machine learning",
+        "histogram",
+        "hyperparameter tuning in machine learning models",
+        "introduction",
+        "introduction to dimension reduction algorithms",
+        "isometric feature mapping",
+        "linear dimensionality reduction: principal component analysis",
+        "linear discriminant analysis",
+        "logarithmic graph",
+        "methods of optimization-numerical optimization",
+        "minimal polynomial",
+        "missing values",
+        "need of exploratory data analysis",
+        "newton's method",
+        "non-linear dimensionality reduction: multidimensional scaling",
+        "ordinary data",
+        "penalty function method",
+        "piechart",
+        "plotting data using bar graph",
+        "principal component analysis (pca) vs. linear discriminant analysis (lda)",
+        "quantitative vs. qualitative data",
+        "random sampling",
+        "random variables and their probability distribution",
+        "sample characteristics and their distributions",
+        "scatter plot",
+        "solving linear equations",
+        "steepest descent method",
+        "stem and leaf plot",
+        "t-",
+        "the central limit theorem",
+        "the four fundamental subspaces",
+        "the singular value decomposition",
+        "time-series graph",
+        "trigonometric graph",
+        "types of optimization-constrained and unconstrained optimization",
+        "types of qualitative data: categorical data",
+        "types of quantitative data: continuous data",
+        "understanding dataset through various plots and graphs",
+        "vectors and matrices"
+      ]
+    },
+    "Artificial Intelligence": {
+      "keywords": [
+        "1.1 introduction",
+        "2.1 agents and environments",
+        "2.2 solving problem by searching: problem solving agent",
+        "3.1 uninformed search methods: breadth first search (bfs)",
+        "3.2 local search algorithms and optimization problems: hill climbing",
+        "3.3 adversarial search: game playing",
+        "4.1 knowledge based agents",
+        "4.2 knowledge engineering in first-order logic",
+        "4.3 uncertain knowledge and reasoning",
+        "5.1 the planning problem",
+        "5.2 learning: forms of learning",
+        "a* search",
+        "a. introduction to nlp- language models",
+        "active reinforcement learning",
+        "alpha beta pruning",
+        "applications of ai",
+        "b. robotics - robots",
+        "backward chaining",
+        "banking",
+        "brief overview of propositional logic",
+        "c. ai applications in healthcare",
+        "components of ai",
+        "conditional planning",
+        "current trends in ai",
+        "depth first iterative deepening (dfid)",
+        "depth first search (dfs)",
+        "depth limited search",
+        "example problems",
+        "first order logic: syntax and semantic",
+        "formulating problems",
+        "forward chaining",
+        "foundations of ai",
+        "genetic algorithms",
+        "grammars",
+        "hierarchical planning",
+        "history of artificial intelligence",
+        "inference in fo",
+        "informed search methods: greedy best first search",
+        "intelligent systems: categorization of intelligent systems",
+        "introduction to reinforcement learning: learning from rewards",
+        "introduction to statistical learning (introduction only)",
+        "learning agent",
+        "memory bounded heuristic search",
+        "min-max search",
+        "pac learning",
+        "parsing",
+        "partial order planning",
+        "passive reinforcement learning",
+        "planning with state space search",
+        "problems robotics can solve",
+        "representing knowledge in an uncertain domain",
+        "resolution",
+        "retail",
+        "robot hardware",
+        "search simulated annealing",
+        "simple inference in belief network",
+        "sub-areas of ai",
+        "the concept of rationality",
+        "the nature of environment",
+        "the semantics of belief network",
+        "the structure of agents",
+        "theory of learning",
+        "types of agents",
+        "uncertainty",
+        "unification"
       ]
     }
+  },
+  "co_mappings": {
+    "Data Structures and Algorithms": {
+      "CO1": {
+        "name": "Introduction to Data Structures",
+        "keywords": [
+          "introduction to data structures",
+          "concept of adt",
+          "abstract data type",
+          "types of data",
+          "data types",
+          "primitive data",
+          "non-primitive",
+          "linear data structure",
+          "nonlinear data structure",
+          "operations on data structures",
+          "applications of data structures"
+        ]
+      },
+      "CO2": {
+        "name": "Stack and Queues",
+        "keywords": [
+          "stack",
+          "adt of stack",
+          "operations on stack",
+          "push",
+          "pop",
+          "array implementation of stack",
+          "applications of stack",
+          "well formed parenthesis",
+          "balanced parenthesis",
+          "infix to postfix",
+          "postfix evaluation",
+          "prefix",
+          "recursion",
+          "queue",
+          "adt of queue",
+          "operations on queue",
+          "enqueue",
+          "dequeue",
+          "array implementation of queue",
+          "circular queue",
+          "priority queue",
+          "double ended queue",
+          "deque",
+          "multiple queues"
+        ]
+      },
+      "CO3": {
+        "name": "Linked List",
+        "keywords": [
+          "linked list",
+          "representation of linked list",
+          "linked list vs array",
+          "singly linked list",
+          "doubly linked list",
+          "circular linked list",
+          "operations on singly linked list",
+          "operations on doubly linked list",
+          "stack using linked list",
+          "queue using linked list",
+          "polynomial representation",
+          "polynomial addition",
+          "generalized linked list"
+        ]
+      },
+      "CO4": {
+        "name": "Tree",
+        "keywords": [
+          "tree",
+          "tree terminologies",
+          "binary tree",
+          "binary tree representation",
+          "types of binary tree",
+          "binary tree traversals",
+          "inorder",
+          "preorder",
+          "postorder",
+          "binary search tree",
+          "bst",
+          "operations on bst",
+          "applications of binary tree",
+          "expression tree",
+          "huffman encoding",
+          "avl tree",
+          "rotations in avl",
+          "avl rotations",
+          "b tree",
+          "b+ tree",
+          "threaded binary tree"
+        ]
+      },
+      "CO5": {
+        "name": "Graphs",
+        "keywords": [
+          "graph",
+          "graph terminologies",
+          "representation of graph",
+          "adjacency matrix",
+          "adjacency list",
+          "graph traversals",
+          "depth first search",
+          "dfs",
+          "breadth first search",
+          "bfs",
+          "topological sorting",
+          "topological sort",
+          "applications of graph"
+        ]
+      },
+      "CO6": {
+        "name": "Searching Techniques",
+        "keywords": [
+          "linear search",
+          "binary search",
+          "hashing",
+          "hash function",
+          "division method",
+          "multiplication method",
+          "mid-square method",
+          "folding method",
+          "collision",
+          "collision resolution",
+          "open addressing",
+          "linear probing",
+          "quadratic probing",
+          "chaining",
+          "separate chaining"
+        ]
+      }
     },
-    "co_mappings": {
-      "Data Structures and Algorithms": {
-        "CO1": {
-          "name": "Introduction to Data Structures",
-          "keywords": [
-            "introduction to data structures",
-            "concept of adt",
-            "abstract data type",
-            "types of data",
-            "data types",
-            "primitive data",
-            "non-primitive",
-            "linear data structure",
-            "nonlinear data structure",
-            "operations on data structures",
-            "applications of data structures"
-          ]
-        },
-        "CO2": {
-          "name": "Stack and Queues",
-          "keywords": [
-            "stack",
-            "adt of stack",
-            "operations on stack",
-            "push",
-            "pop",
-            "array implementation of stack",
-            "applications of stack",
-            "well formed parenthesis",
-            "balanced parenthesis",
-            "infix to postfix",
-            "postfix evaluation",
-            "prefix",
-            "recursion",
-            "queue",
-            "adt of queue",
-            "operations on queue",
-            "enqueue",
-            "dequeue",
-            "array implementation of queue",
-            "circular queue",
-            "priority queue",
-            "double ended queue",
-            "deque",
-            "multiple queues"
-          ]
-        },
-        "CO3": {
-          "name": "Linked List",
-          "keywords": [
-            "linked list",
-            "representation of linked list",
-            "linked list vs array",
-            "singly linked list",
-            "doubly linked list",
-            "circular linked list",
-            "operations on singly linked list",
-            "operations on doubly linked list",
-            "stack using linked list",
-            "queue using linked list",
-            "polynomial representation",
-            "polynomial addition",
-            "generalized linked list"
-          ]
-        },
-        "CO4": {
-          "name": "Tree",
-          "keywords": [
-            "tree",
-            "tree terminologies",
-            "binary tree",
-            "binary tree representation",
-            "types of binary tree",
-            "binary tree traversals",
-            "inorder",
-            "preorder",
-            "postorder",
-            "binary search tree",
-            "bst",
-            "operations on bst",
-            "applications of binary tree",
-            "expression tree",
-            "huffman encoding",
-            "avl tree",
-            "rotations in avl",
-            "avl rotations",
-            "b tree",
-            "b+ tree",
-            "threaded binary tree"
-          ]
-        },
-        "CO5": {
-          "name": "Graphs",
-          "keywords": [
-            "graph",
-            "graph terminologies",
-            "representation of graph",
-            "adjacency matrix",
-            "adjacency list",
-            "graph traversals",
-            "depth first search",
-            "dfs",
-            "breadth first search",
-            "bfs",
-            "topological sorting",
-            "topological sort",
-            "applications of graph"
-          ]
-        },
-        "CO6": {
-          "name": "Searching Techniques",
-          "keywords": [
-            "linear search",
-            "binary search",
-            "hashing",
-            "hash function",
-            "division method",
-            "multiplication method",
-            "mid-square method",
-            "folding method",
-            "collision",
-            "collision resolution",
-            "open addressing",
-            "linear probing",
-            "quadratic probing",
-            "chaining",
-            "separate chaining"
-          ]
-        }
+    "Discrete Structures and Graph Theory": {
+      "CO1": {
+        "name": "Logic",
+        "keywords": [
+          "propositional logic",
+          "predicate logic",
+          "laws of logic",
+          "quantifiers",
+          "universal quantifier",
+          "existential quantifier",
+          "normal forms",
+          "cnf",
+          "dnf",
+          "conjunctive normal form",
+          "disjunctive normal form",
+          "inference theory",
+          "predicate calculus",
+          "truth table",
+          "boolean algebra"
+        ]
       },
-      "Discrete Structures and Graph Theory": {
-        "CO1": {
-          "name": "Logic",
-          "keywords": [
-            "propositional logic",
-            "predicate logic",
-            "laws of logic",
-            "quantifiers",
-            "universal quantifier",
-            "existential quantifier",
-            "normal forms",
-            "cnf",
-            "dnf",
-            "conjunctive normal form",
-            "disjunctive normal form",
-            "inference theory",
-            "predicate calculus",
-            "truth table",
-            "boolean algebra"
-          ]
-        },
-        "CO2": {
-          "name": "Relations and Functions",
-          "keywords": [
-            "set theory",
-            "sets",
-            "venn diagram",
-            "operation on sets",
-            "union",
-            "intersection",
-            "partition of set",
-            "relations",
-            "types of relations",
-            "reflexive",
-            "symmetric",
-            "transitive",
-            "representation of relations",
-            "closure of relations",
-            "warshall's algorithm",
-            "equivalence relations",
-            "equivalence classes",
-            "functions",
-            "types of functions",
-            "injective",
-            "surjective",
-            "bijective",
-            "composition of functions",
-            "identity function",
-            "inverse function",
-            "operation on relations"
-          ]
-        },
-        "CO3": {
-          "name": "Posets and Lattice",
-          "keywords": [
-            "posets",
-            "partial order relations",
-            "poset",
-            "hasse diagram",
-            "chain",
-            "anti chain",
-            "lattice",
-            "types of lattice",
-            "sub lattice"
-          ]
-        },
-        "CO4": {
-          "name": "Permutation, Combination and Discrete Probability",
-          "keywords": [
-            "permutation",
-            "combination",
-            "rules of sum and product",
-            "counting principles",
-            "pigeonhole principle",
-            "recurrence relations",
-            "solving recurrence relations",
-            "random experiment",
-            "sample space",
-            "events",
-            "axioms of probability",
-            "conditional probability",
-            "theorem of total probability",
-            "bayes' theorem",
-            "bayes theorem",
-            "application to information theory",
-            "discrete probability",
-            "markov chains"
-          ]
-        },
-        "CO5": {
-          "name": "Algebraic Structures",
-          "keywords": [
-            "algebraic structures",
-            "binary operation",
-            "semi group",
-            "monoid",
-            "groups",
-            "subgroups",
-            "abelian group",
-            "cyclic group",
-            "isomorphism",
-            "ring",
-            "coding theory",
-            "binary information",
-            "error detection",
-            "error correction",
-            "cryptography"
-          ]
-        },
-        "CO6": {
-          "name": "Graph Theory",
-          "keywords": [
-            "graph theory",
-            "types of graphs",
-            "graph representation",
-            "sub graphs",
-            "operations on graphs",
-            "walk",
-            "path",
-            "circuit",
-            "connected graphs",
-            "disconnected graph",
-            "components",
-            "homomorphism",
-            "isomorphism of graphs",
-            "euler graph",
-            "hamiltonian graphs",
-            "planar graph",
-            "cut set",
-            "cut vertex",
-            "graph coloring",
-            "graph traversals algorithm",
-            "bfs",
-            "dfs",
-            "dijkstra's algorithm",
-            "dijkstra"
-          ]
-        }
+      "CO2": {
+        "name": "Relations and Functions",
+        "keywords": [
+          "set theory",
+          "sets",
+          "venn diagram",
+          "operation on sets",
+          "union",
+          "intersection",
+          "partition of set",
+          "relations",
+          "types of relations",
+          "reflexive",
+          "symmetric",
+          "transitive",
+          "representation of relations",
+          "closure of relations",
+          "warshall's algorithm",
+          "equivalence relations",
+          "equivalence classes",
+          "functions",
+          "types of functions",
+          "injective",
+          "surjective",
+          "bijective",
+          "composition of functions",
+          "identity function",
+          "inverse function",
+          "operation on relations"
+        ]
       },
-      "Database Management Systems": {
-        "CO1": {
-          "name": "Introduction to Database Concepts and Data modeling",
-          "keywords": [
-            "introduction to database",
-            "characteristics of databases",
-            "file system vs database system",
-            "data abstraction",
-            "data independence",
-            "dbms architecture",
-            "three schema architecture",
-            "applications of databases",
-            "dbms system"
-          ]
-        },
-        "CO2": {
-          "name": "The Entity-Relationship (ER) Model and Relational Model",
-          "keywords": [
-            "entity relationship model",
-            "er model",
-            "entity types",
-            "weak entity",
-            "strong entity",
-            "entity sets",
-            "attributes",
-            "keys",
-            "relationship constraints",
-            "cardinality",
-            "participation",
-            "extended er",
-            "eer model",
-            "generalization",
-            "specialization",
-            "aggregation",
-            "relational model",
-            "relational schema",
-            "mapping er to relational",
-            "mapping eer to relational",
-            "relational algebra",
-            "operators in relational algebra",
-            "algebra queries"
-          ]
-        },
-        "CO3": {
-          "name": "Structured Query Language (SQL)",
-          "keywords": [
-            "sql",
-            "overview of sql",
-            "data definition",
-            "ddl",
-            "data manipulation",
-            "dml",
-            "data control",
-            "dcl",
-            "integrity constraints",
-            "key constraints",
-            "domain constraints",
-            "referential integrity",
-            "check constraints",
-            "set operations",
-            "string operations",
-            "aggregate functions",
-            "group by",
-            "having",
-            "nested queries",
-            "subqueries",
-            "complex queries",
-            "triggers",
-            "views",
-            "stored procedures",
-            "introduction to pl/sql"
-          ]
-        },
-        "CO4": {
-          "name": "Database Normalization",
-          "keywords": [
-            "pitfalls in relational database",
-            "relational database design",
-            "concept of normalization",
-            "functional dependencies",
-            "fd",
-            "first normal form",
-            "1nf",
-            "second normal form",
-            "2nf",
-            "third normal form",
-            "3nf",
-            "bcnf",
-            "boyce codd normal form",
-            "fourth normal form",
-            "4nf",
-            "5nf"
-          ]
-        },
-        "CO5": {
-          "name": "Transactions Management, Concurrency Control and Recovery",
-          "keywords": [
-            "transaction concept",
-            "transaction states",
-            "acid properties",
-            "transaction control commands",
-            "concurrency execution",
-            "serializability",
-            "conflict serializability",
-            "view serializability",
-            "concurrency control",
-            "lock based protocol",
-            "timestamp based protocol",
-            "recovery system",
-            "log based recovery",
-            "deadlock handling",
-            "deadlock prevention",
-            "deadlock detection"
-          ]
-        },
-        "CO6": {
-          "name": "Introduction to Emerging databases",
-          "keywords": [
-            "limitations of conventional databases",
-            "multimedia databases",
-            "data types in multimedia",
+      "CO3": {
+        "name": "Posets and Lattice",
+        "keywords": [
+          "posets",
+          "partial order relations",
+          "poset",
+          "hasse diagram",
+          "chain",
+          "anti chain",
+          "lattice",
+          "types of lattice",
+          "sub lattice"
+        ]
+      },
+      "CO4": {
+        "name": "Permutation, Combination and Discrete Probability",
+        "keywords": [
+          "permutation",
+          "combination",
+          "rules of sum and product",
+          "counting principles",
+          "pigeonhole principle",
+          "recurrence relations",
+          "solving recurrence relations",
+          "random experiment",
+          "sample space",
+          "events",
+          "axioms of probability",
+          "conditional probability",
+          "theorem of total probability",
+          "bayes' theorem",
+          "bayes theorem",
+          "application to information theory",
+          "discrete probability",
+          "markov chains"
+        ]
+      },
+      "CO5": {
+        "name": "Algebraic Structures",
+        "keywords": [
+          "algebraic structures",
+          "binary operation",
+          "semi group",
+          "monoid",
+          "groups",
+          "subgroups",
+          "abelian group",
+          "cyclic group",
+          "isomorphism",
+          "ring",
+          "coding theory",
+          "binary information",
+          "error detection",
+          "error correction",
+          "cryptography"
+        ]
+      },
+      "CO6": {
+        "name": "Graph Theory",
+        "keywords": [
+          "graph theory",
+          "types of graphs",
+          "graph representation",
+          "sub graphs",
+          "operations on graphs",
+          "walk",
+          "path",
+          "circuit",
+          "connected graphs",
+          "disconnected graph",
+          "components",
+          "homomorphism",
+          "isomorphism of graphs",
+          "euler graph",
+          "hamiltonian graphs",
+          "planar graph",
+          "cut set",
+          "cut vertex",
+          "graph coloring",
+          "graph traversals algorithm",
+          "bfs",
+          "dfs",
+          "dijkstra's algorithm",
+          "dijkstra"
+        ]
+      }
+    },
+    "Database Management Systems": {
+      "CO1": {
+        "name": "Introduction to Database Concepts and Data modeling",
+        "keywords": [
+          "introduction to database",
+          "characteristics of databases",
+          "file system vs database system",
+          "data abstraction",
+          "data independence",
+          "dbms architecture",
+          "three schema architecture",
+          "applications of databases",
+          "dbms system"
+        ]
+      },
+      "CO2": {
+        "name": "The Entity-Relationship (ER) Model and Relational Model",
+        "keywords": [
+          "entity relationship model",
+          "er model",
+          "entity types",
+          "weak entity",
+          "strong entity",
+          "entity sets",
+          "attributes",
+          "keys",
+          "relationship constraints",
+          "cardinality",
+          "participation",
+          "extended er",
+          "eer model",
+          "generalization",
+          "specialization",
+          "aggregation",
+          "relational model",
+          "relational schema",
+          "mapping er to relational",
+          "mapping eer to relational",
+          "relational algebra",
+          "operators in relational algebra",
+          "algebra queries"
+        ]
+      },
+      "CO3": {
+        "name": "Structured Query Language (SQL)",
+        "keywords": [
+          "sql",
+          "overview of sql",
+          "data definition",
+          "ddl",
+          "data manipulation",
+          "dml",
+          "data control",
+          "dcl",
+          "integrity constraints",
+          "key constraints",
+          "domain constraints",
+          "referential integrity",
+          "check constraints",
+          "set operations",
+          "string operations",
+          "aggregate functions",
+          "group by",
+          "having",
+          "nested queries",
+          "subqueries",
+          "complex queries",
+          "triggers",
+          "views",
+          "stored procedures",
+          "introduction to pl/sql"
+        ]
+      },
+      "CO4": {
+        "name": "Database Normalization",
+        "keywords": [
+          "pitfalls in relational database",
+          "relational database design",
+          "concept of normalization",
+          "functional dependencies",
+          "fd",
+          "first normal form",
+          "1nf",
+          "second normal form",
+          "2nf",
+          "third normal form",
+          "3nf",
+          "bcnf",
+          "boyce codd normal form",
+          "fourth normal form",
+          "4nf",
+          "5nf"
+        ]
+      },
+      "CO5": {
+        "name": "Transactions Management, Concurrency Control and Recovery",
+        "keywords": [
+          "transaction concept",
+          "transaction states",
+          "acid properties",
+          "transaction control commands",
+          "concurrency execution",
+          "serializability",
+          "conflict serializability",
+          "view serializability",
+          "concurrency control",
+          "lock based protocol",
+          "timestamp based protocol",
+          "recovery system",
+          "log based recovery",
+          "deadlock handling",
+          "deadlock prevention",
+          "deadlock detection"
+        ]
+      },
+      "CO6": {
+        "name": "Introduction to Emerging databases",
+        "keywords": [
+          "limitations of conventional databases",
+          "multimedia databases",
+          "data types in multimedia",
           "contents of multimedia databases",
-            "cloud databases",
-            "introduction to distributed databases",
-            "design steps for distributed databases",
-            "types of distributed databases",
-            "storage methods"
-          ]
-        }
+          "cloud databases",
+          "introduction to distributed databases",
+          "design steps for distributed databases",
+          "types of distributed databases",
+          "storage methods"
+        ]
+      }
+    },
+    "Quantitative Analysis": {
+      "CO1": {
+        "name": "Estimation Theory",
+        "keywords": [
+          "moments",
+          "estimator",
+          "likelihood",
+          "mle",
+          "properties of good estimator"
+        ]
       },
-      "Quantitative Analysis": {
-        "CO1": {
-          "name": "Estimation Theory",
-          "keywords": ["moments", "estimator", "likelihood", "mle", "properties of good estimator"]
-        },
-        "CO2": {
-          "name": "Regression and Correlation",
-          "keywords": ["regression", "correlation", "mae", "mape", "ssr", "sse", "coefficient of determination"]
-        },
-        "CO3": {
-          "name": "Hypothesis Testing",
-          "keywords": ["null", "alternative", "hypothesis", "significance level", "f-test"]
-        },
-        "CO4": {
-          "name": "Probability Distributions",
-          "keywords": ["normal distribution", "skewness", "kurtosis", "mean", "variance"]
-        }
+      "CO2": {
+        "name": "Regression and Correlation",
+        "keywords": [
+          "regression",
+          "correlation",
+          "mae",
+          "mape",
+          "ssr",
+          "sse",
+          "coefficient of determination"
+        ]
+      },
+      "CO3": {
+        "name": "Hypothesis Testing",
+        "keywords": [
+          "null",
+          "alternative",
+          "hypothesis",
+          "significance level",
+          "f-test"
+        ]
+      },
+      "CO4": {
+        "name": "Probability Distributions",
+        "keywords": [
+          "normal distribution",
+          "skewness",
+          "kurtosis",
+          "mean",
+          "variance"
+        ]
+      }
+    },
+    "Mathematics": {
+      "CO1": {
+        "name": "Linear Algebra",
+        "keywords": [
+          "vectors and matrices",
+          "solving linear equations",
+          "the four fundamental subspaces",
+          "eigen values and eigen vectors",
+          "the singular value decomposition",
+          "applications of eigenvalues and eigenvectors in machine learning"
+        ]
+      },
+      "CO2": {
+        "name": "Probability and Statistics",
+        "keywords": [
+          "introduction",
+          "random variables and their probability distribution",
+          "random sampling",
+          "sample characteristics and their distributions",
+          "chi square",
+          "t-",
+          "and f-distributions: exact sampling distributions",
+          "the central limit theorem",
+          "bayesian statistics and its applications"
+        ]
+      },
+      "CO3": {
+        "name": "Introduction to Graphs",
+        "keywords": [
+          "quantitative vs. qualitative data",
+          "types of quantitative data: continuous data",
+          "discrete data",
+          "types of qualitative data: categorical data",
+          "binary data",
+          "ordinary data",
+          "plotting data using bar graph",
+          "piechart",
+          "histogram",
+          "stem and leaf plot",
+          "dot plot",
+          "scatter plot",
+          "time-series graph",
+          "exponential graph",
+          "logarithmic graph",
+          "trigonometric graph",
+          "frequency distribution graph",
+          "graph-based data structures in python"
+        ]
+      },
+      "CO4": {
+        "name": "Exploratory Data Analysis",
+        "keywords": [
+          "need of exploratory data analysis",
+          "cleaning and preparing data",
+          "feature engineering",
+          "missing values",
+          "understanding dataset through various plots and graphs",
+          "draw conclusions",
+          "deciding appropriate machine learning models",
+          "handling imbalanced datasets in machine learning"
+        ]
+      },
+      "CO5": {
+        "name": "Optimization Techniques",
+        "keywords": [
+          "types of optimization-constrained and unconstrained optimization",
+          "methods of optimization-numerical optimization",
+          "bracketing methods bisection method",
+          "false position method",
+          "newton's method",
+          "steepest descent method",
+          "penalty function method",
+          "hyperparameter tuning in machine learning models"
+        ]
+      },
+      "CO6": {
+        "name": "Dimension Reduction Algorithm",
+        "keywords": [
+          "introduction to dimension reduction algorithms",
+          "linear dimensionality reduction: principal component analysis",
+          "factor analysis",
+          "linear discriminant analysis",
+          "non-linear dimensionality reduction: multidimensional scaling",
+          "isometric feature mapping",
+          "minimal polynomial",
+          "principal component analysis (pca) vs. linear discriminant analysis (lda)"
+        ]
+      }
+    },
+    "Artificial Intelligence": {
+      "CO1": {
+        "name": "Introduction to Artificial Intelligence",
+        "keywords": [
+          "1.1 introduction",
+          "history of artificial intelligence",
+          "intelligent systems: categorization of intelligent systems",
+          "components of ai",
+          "foundations of ai",
+          "sub-areas of ai",
+          "applications of ai",
+          "current trends in ai"
+        ]
+      },
+      "CO2": {
+        "name": "Intelligent Agents",
+        "keywords": [
+          "2.1 agents and environments",
+          "the concept of rationality",
+          "the nature of environment",
+          "the structure of agents",
+          "types of agents",
+          "learning agent",
+          "2.2 solving problem by searching: problem solving agent",
+          "formulating problems",
+          "example problems"
+        ]
+      },
+      "CO3": {
+        "name": "Problem Solving",
+        "keywords": [
+          "3.1 uninformed search methods: breadth first search (bfs)",
+          "depth first search (dfs)",
+          "depth limited search",
+          "depth first iterative deepening (dfid)",
+          "informed search methods: greedy best first search",
+          "a* search",
+          "memory bounded heuristic search",
+          "3.2 local search algorithms and optimization problems: hill climbing",
+          "search simulated annealing",
+          "genetic algorithms",
+          "3.3 adversarial search: game playing",
+          "min-max search",
+          "alpha beta pruning"
+        ]
+      },
+      "CO4": {
+        "name": "Knowledge and Reasoning",
+        "keywords": [
+          "4.1 knowledge based agents",
+          "brief overview of propositional logic",
+          "first order logic: syntax and semantic",
+          "inference in fo",
+          "forward chaining",
+          "backward chaining",
+          "4.2 knowledge engineering in first-order logic",
+          "unification",
+          "resolution",
+          "4.3 uncertain knowledge and reasoning",
+          "uncertainty",
+          "representing knowledge in an uncertain domain",
+          "the semantics of belief network",
+          "simple inference in belief network"
+        ]
+      },
+      "CO5": {
+        "name": "Planning and Learning",
+        "keywords": [
+          "5.1 the planning problem",
+          "planning with state space search",
+          "partial order planning",
+          "hierarchical planning",
+          "conditional planning",
+          "5.2 learning: forms of learning",
+          "theory of learning",
+          "pac learning",
+          "introduction to statistical learning (introduction only)",
+          "introduction to reinforcement learning: learning from rewards",
+          "passive reinforcement learning",
+          "active reinforcement learning"
+        ]
+      },
+      "CO6": {
+        "name": "AI Applications",
+        "keywords": [
+          "a. introduction to nlp- language models",
+          "grammars",
+          "parsing",
+          "b. robotics - robots",
+          "robot hardware",
+          "problems robotics can solve",
+          "c. ai applications in healthcare",
+          "retail",
+          "banking"
+        ]
       }
     }
   }
+}
