@@ -25,6 +25,7 @@ with open(LABEL_ENCODER_PATH, 'rb') as f:
 with open(JSON_PATH, "r") as f:
     config = json.load(f)
 
+#match CO's to the questions
 def get_best_match(clean_q, items):
     if not items: return "N/A", 0
     matches = []
@@ -34,6 +35,7 @@ def get_best_match(clean_q, items):
     best_match = max(matches, key=lambda x: x[1], default=("N/A", 0, ""))
     return best_match if best_match[1] > 0 else ("CO-NA", 0, "Not Matched")
 
+#show predicted Bloom;s value for the quesiton
 def get_notebook_analysis(question_text):
     clean_q = re.sub(r'[^\w\s]', '', question_text.lower())
     tfidf_q = vectorizer.transform([clean_q]).toarray()
@@ -42,7 +44,7 @@ def get_notebook_analysis(question_text):
     co_id, _, co_name = get_best_match(clean_q, config.get('co_mappings', {}).get(subject_id, {}))
     return bloom_level, co_id, co_name
 
-
+#clean
 def extract_questions(text):
     if not text: return []
     text = text.replace("\r", " ").replace("\n", " ")
@@ -58,6 +60,7 @@ def extract_questions(text):
     #4)end after ?
     text = re.sub(r'(\?\s+)(?=[A-Z])', r'\1' + sep, text)
 
+    #remove junk words
     chunks = text.split(sep)
     final_questions = []
     ignore = ["Class / SEM:", "Subject:", "Max. Marks:", "Duration:", "Note:", "Figures to the right", "Internal Assessment"]
