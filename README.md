@@ -92,15 +92,6 @@ In `app.py`:
 
 In `nlp_utils.py`, `EMBED_MODEL_NAME` selects the embedding model (for example `LaBSE` or `multilingual-e5-base`). Retrain after changing it.
 
-## Limitations
-
-- Hindi and Marathi accuracy depends on cross-language transfer from the English training data until you add labelled Hindi/Marathi data.
-- PDFs created with legacy fonts (for example Kruti Dev) extract as unreadable text; use Unicode fonts or OCR.
-- CO mapping needs the syllabus keywords in `co_mapping.json`; questions far from those topics show "Not Matched".
-- Scanned PDFs need the optional OCR setup.
-- `.doc` files are not supported; save them as `.docx`.
-- Marks of questions are not analysed.
-
 ## Authors
 
 - Vishruth Shetty
