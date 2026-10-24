@@ -90,14 +90,6 @@ Open http://127.0.0.1:5000, upload a question paper and click **Analyze**.
 
 Open `model/model.ipynb`, run all cells and the notebook saves `bloom_model.h5`, `vectorizer.pkl` and `label_encoder.pkl` in `model/`.
 
-## Limitations
-
-- English only
-- Scanned (image-only) PDFs are not supported
-- CO mapping is keyword based, so questions without the configured keywords show "Not Matched"
-- Marks of questions are not analysed
-- `.doc` files are not supported; save them as `.docx`
-
 ## Authors
 
 - Vishruth Shetty
