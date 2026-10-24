@@ -102,3 +102,5 @@ Open `model/model.ipynb`, run all cells and the notebook saves `bloom_model.h5`,
 
 - Vishruth Shetty
 - Shlok Yadav
+- Devika Nair
+- Sanika Desai
