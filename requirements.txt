@@ -1,0 +1,16 @@
+flask
+numpy
+pandas
+scikit-learn
+joblib
+regex
+sentence-transformers
+PyMuPDF
+mammoth
+
+# Optional: OCR for scanned Hindi/Marathi PDFs.
+# Also install the Tesseract program with the Hindi + Marathi language packs:
+#   macOS:   brew install tesseract tesseract-lang
+#   Ubuntu:  sudo apt install tesseract-ocr tesseract-ocr-hin tesseract-ocr-mar
+pytesseract
+pillow

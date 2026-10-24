@@ -1,100 +1,138 @@
-from flask import Flask, render_template, request, jsonify
-import os
 import json
-import pandas as pd
-import tensorflow as tf
-import pickle
-import PyPDF2
+import os
 import re
-import mammoth
+
+import joblib
 import numpy as np
+from flask import Flask, jsonify, render_template, request
+from sentence_transformers import SentenceTransformer
+
+from nlp_utils import (
+    clean_for_model,
+    extract_questions,
+    read_uploaded_file,
+    strip_leading_marker,
+)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CLASSIFIER_PATH = os.path.join(BASE_DIR, "model", "bloom_multilingual.joblib")  # made by train_multilingual.py
+JSON_PATH = os.path.join(BASE_DIR, "data", "co_mapping.json")
+
+# CO / subject matching thresholds (cosine similarity, 0..1). Tune these on real papers:
+# raise them if unrelated questions get matched, lower them if too many show "Not Matched".
+MIN_SUBJECT_SCORE = 0.30
+MIN_CO_SCORE = 0.30
+KEYWORD_BOOST = 0.20  # extra score when an exact (English) keyword appears in the question
 
 app = Flask(__name__)
 
-# Load Model
-MODEL_PATH = "model/bloom_model.h5"
-VECTORIZER_PATH = "model/vectorizer.pkl"
-LABEL_ENCODER_PATH = "model/label_encoder.pkl"
-JSON_PATH = "data/co_mapping.json"
+# ---------------------------------------------------------------- load models
+bundle = joblib.load(CLASSIFIER_PATH)
+clf = bundle["clf"]
+embedder = SentenceTransformer(bundle["embed_model"])  # downloads once from Hugging Face, then cached
 
-model = tf.keras.models.load_model(MODEL_PATH)
-with open(VECTORIZER_PATH, 'rb') as f:
-    vectorizer = pickle.load(f)
-with open(LABEL_ENCODER_PATH, 'rb') as f:
-    label_encoder = pickle.load(f)
-with open(JSON_PATH, "r") as f:
+with open(JSON_PATH, encoding="utf-8") as f:
     config = json.load(f)
 
-#match CO's to the questions
-def get_best_match(clean_q, items):
-    if not items: return "N/A", 0
-    matches = []
-    for key, data in items.items():
-        score = sum(kw.lower() in clean_q for kw in data.get('keywords', []))
-        matches.append((key, score, data.get('name', '')))
-    best_match = max(matches, key=lambda x: x[1], default=("N/A", 0, ""))
-    return best_match if best_match[1] > 0 else ("CO-NA", 0, "Not Matched")
 
-#show predicted Bloom;s value for the quesiton
-def get_notebook_analysis(question_text):
-    clean_q = re.sub(r'[^\w\s]', '', question_text.lower())
-    tfidf_q = vectorizer.transform([clean_q]).toarray()
-    bloom_level = label_encoder.inverse_transform([np.argmax(model.predict(tfidf_q, verbose=0))])[0]
-    subject_id, _ , _ = get_best_match(clean_q, config.get('subjects', {}))
-    co_id, _, co_name = get_best_match(clean_q, config.get('co_mappings', {}).get(subject_id, {}))
-    return bloom_level, co_id, co_name
+def embed(texts):
+    """L2-normalised embeddings, so a dot product == cosine similarity."""
+    return embedder.encode(texts, batch_size=64, normalize_embeddings=True, show_progress_bar=False)
 
-#clean
-def extract_questions(text):
-    if not text: return []
-    text = text.replace("\r", " ").replace("\n", " ")
-    text = re.sub(r'\s+', ' ', text)
-    
-    sep = "|||"
-    #1) spilt at 'Q' with a number
-    text = re.sub(r'(\bQ\.?\s*\d+[\.:]?)', sep + r'\1', text)
-    #2)split for a).....
-    text = re.sub(r'(\b[a-g]\s*\))', sep + r'\1', text)
-    # 3)New question start after A)and B)
-    text = re.sub(r'(\bOR\s+[AB]\s*\)|\b[AB]\s*\))', sep + r'\1', text)
-    #4)end after ?
-    text = re.sub(r'(\?\s+)(?=[A-Z])', r'\1' + sep, text)
 
-    #remove junk words
-    chunks = text.split(sep)
-    final_questions = []
-    ignore = ["Class / SEM:", "Subject:", "Max. Marks:", "Duration:", "Note:", "Figures to the right", "Internal Assessment"]
+# ---------------------------------------------------------------- CO index
+def build_index(cfg):
+    """Pre-embed every subject keyword and every CO name/keyword once at startup."""
+    index = {}
+    for subject, sdata in cfg.get("subjects", {}).items():
+        kws = [k for k in sdata.get("keywords", []) if str(k).strip()]
+        cos = {}
+        for co_key, co in cfg.get("co_mappings", {}).get(subject, {}).items():
+            texts = [t for t in [co.get("name", "")] + co.get("keywords", []) if str(t).strip()]
+            if texts:
+                cos[co_key] = {"name": co.get("name", ""), "texts": texts, "emb": embed(texts)}
+        index[subject] = {"texts": kws, "emb": embed(kws) if kws else None, "cos": cos}
+    return index
 
-    for chunk in chunks:
-        q = chunk.strip()
-        if not q or len(q) < 10 or any(k in q for k in ignore):
-            continue
 
-        if any(p in q.lower() for p in ["attempt any", "solve any"]) and len(q.split()) < 15:
-            continue
-        final_questions.append(q)
-    return final_questions
+INDEX = build_index(config)
 
-@app.route('/')
-def home(): return render_template('index.html')
 
-@app.route('/analyze', methods=['POST'])
+def keyword_hit(kw, text):
+    kw = str(kw).lower().strip()
+    if not kw:
+        return False
+    if kw.isascii():  # whole-word match so "tree" doesn't fire on "street"
+        return re.search(r"(?<!\w)" + re.escape(kw) + r"(?!\w)", text) is not None
+    return kw in text
+
+
+def score(q_emb, q_text, emb, texts):
+    if emb is None or len(texts) == 0:
+        return 0.0
+    best = float(np.max(emb @ q_emb))
+    if any(keyword_hit(t, q_text) for t in texts):
+        best += KEYWORD_BOOST
+    return best
+
+
+def match_co(q_emb, q_text):
+    """Pick the best subject, then the best CO inside it. Never raises."""
+    best_subject, best_score = None, 0.0
+    for subject, s in INDEX.items():
+        sc = score(q_emb, q_text, s["emb"], s["texts"])
+        if sc > best_score:
+            best_subject, best_score = subject, sc
+    if best_subject is None or best_score < MIN_SUBJECT_SCORE:
+        return "CO-NA", "Not Matched"
+
+    best_co, best_co_score, best_co_name = None, 0.0, ""
+    for co_key, co in INDEX[best_subject]["cos"].items():
+        sc = score(q_emb, q_text, co["emb"], co["texts"])
+        if sc > best_co_score:
+            best_co, best_co_score, best_co_name = co_key, sc, co["name"]
+    if best_co is None or best_co_score < MIN_CO_SCORE:
+        return "CO-NA", "Not Matched"
+    return best_co, best_co_name
+
+
+def analyze_questions(questions):
+    """Returns [(bloom_level, co_id, co_name), ...] – works for English, Hindi and Marathi."""
+    if not questions:
+        return []
+    cleaned = [clean_for_model(strip_leading_marker(q)) for q in questions]
+    embs = embed(cleaned)
+    blooms = clf.predict(embs)
+    results = []
+    for q_text, q_emb, bloom in zip(cleaned, embs, blooms):
+        co_id, co_name = match_co(q_emb, q_text)
+        results.append((str(bloom), co_id, co_name))
+    return results
+
+
+# ---------------------------------------------------------------- routes
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/analyze", methods=["POST"])
 def analyze():
-    file = request.files['file']
-    if file.filename.endswith(".pdf"):
-        reader = PyPDF2.PdfReader(file)
-        text = " ".join(page.extract_text() or "" for page in reader.pages)
-    elif file.filename.endswith((".docx", ".doc")):
-        text = mammoth.extract_raw_text(file).value
-    else:
-        text = file.read().decode("utf-8")
+    file = request.files.get("file")
+    if file is None or not file.filename:
+        return jsonify({"error": "No file uploaded."}), 400
+    try:
+        text = read_uploaded_file(file)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception:
+        app.logger.exception("Could not read uploaded file")
+        return jsonify({"error": "Could not read this file. Try a different PDF/DOCX/TXT."}), 400
 
     questions = extract_questions(text)
-    predictions, co_mapping = [], []
-    for q in questions:
-        bloom, co_id, co_name = get_notebook_analysis(q)
-        predictions.append(bloom)
-        co_mapping.append({"co_code": co_id, "co_name": co_name})
+    results = analyze_questions(questions)
+    predictions = [r[0] for r in results]
+    co_mapping = [{"co_code": r[1], "co_name": r[2]} for r in results]
 
     dominant_bloom = max(set(predictions), key=predictions.count) if predictions else "Remember"
     return jsonify({
@@ -103,8 +141,9 @@ def analyze():
         "predictions": predictions,
         "co_mapping": co_mapping,
         "total_questions": len(questions),
-        "overall_difficulty": dominant_bloom
+        "overall_difficulty": dominant_bloom,
     })
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
