@@ -13,7 +13,7 @@ import joblib
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_reportgit
 from sklearn.model_selection import train_test_split
 
 from nlp_utils import EMBED_MODEL_NAME, clean_for_model
