@@ -6,14 +6,14 @@ For the original English-only version, see the `main` branch.
 
 ## What is different from `main`
 
-| Area | `main` | `multilingual-support` |
-|---|---|---|
-| Text cleaning | `re` with `\w` (removes Devanagari vowel signs) | `regex` library; keeps Devanagari letters and marks, normalises digits (१२३ → 123) |
-| Question splitting | English markers only | Also handles `प्र. १`, `प्रश्न 1`, `अ) ब) क)`, `अथवा` / `किंवा`, and `।` |
-| PDF reading | PyPDF2 | PyMuPDF, with optional OCR fallback for scanned pages |
-| Bloom's classifier | TF-IDF + Keras neural network | Multilingual sentence embeddings + logistic regression |
-| CO mapping | substring keyword match | embedding similarity plus whole-word keyword boost; English keywords work for Hindi and Marathi questions |
-| Dependencies | TensorFlow, PyPDF2 | sentence-transformers, PyMuPDF, regex, joblib (TensorFlow and PyPDF2 not needed) |
+| Area               | `main`                                          | `multilingual-support`                                                                                    |
+| ------------------ | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Text cleaning      | `re` with `\w` (removes Devanagari vowel signs) | `regex` library; keeps Devanagari letters and marks, normalises digits (१२३ → 123)                        |
+| Question splitting | English markers only                            | Also handles `प्र. १`, `प्रश्न 1`, `अ) ब) क)`, `अथवा` / `किंवा`, and `।`                                  |
+| PDF reading        | PyPDF2                                          | PyMuPDF, with optional OCR fallback for scanned pages                                                     |
+| Bloom's classifier | TF-IDF + Keras neural network                   | Multilingual sentence embeddings + logistic regression                                                    |
+| CO mapping         | substring keyword match                         | embedding similarity plus whole-word keyword boost; English keywords work for Hindi and Marathi questions |
+| Dependencies       | TensorFlow, PyPDF2                              | sentence-transformers, PyMuPDF, regex, joblib (TensorFlow and PyPDF2 not needed)                          |
 
 ## Project structure
 
@@ -105,5 +105,3 @@ In `nlp_utils.py`, `EMBED_MODEL_NAME` selects the embedding model (for example `
 
 - Vishruth Shetty
 - Shlok Yadav
-
-Subject In-charge: Prof. Ujwala Ravale · HOD: Prof. Aparna Bannore
